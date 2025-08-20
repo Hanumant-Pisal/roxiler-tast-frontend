@@ -18,11 +18,11 @@ export default function Table({
       let aValue = a[sortConfig.key];
       let bValue = b[sortConfig.key];
 
-      // Handle undefined or null values
+      
       if (aValue == null) return sortConfig.direction === 'asc' ? -1 : 1;
       if (bValue == null) return sortConfig.direction === 'asc' ? 1 : -1;
 
-      // Convert to string for case-insensitive comparison
+      
       aValue = String(aValue).toLowerCase();
       bValue = String(bValue).toLowerCase();
 

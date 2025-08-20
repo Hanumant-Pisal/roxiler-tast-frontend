@@ -49,7 +49,7 @@ export default function Login() {
         </Button>
       </form>
       <div className="mt-3 text-sm text-center">
-        Don’t have an account? <Link className="text-blue-600" to={ROUTES.SIGNUP}>Sign up</Link>
+        Don't have an account? <Link className="text-blue-600" to={ROUTES.SIGNUP}>Sign up</Link>
       </div>
       {location.state?.from && (
         <div className="text-xs text-gray-500 mt-2">Redirected from {location.state.from.pathname}</div>
