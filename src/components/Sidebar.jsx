@@ -14,7 +14,7 @@ export default function Sidebar({ items = [] }) {
       <div className="mb-10">
         <h2 className="text-2xl font-bold text-gray-800 flex items-center justify-center mt-6">
          
-          <Link to="/" className="font-semibold">Admin Dashboard</Link>
+          <Link to="/admin/dashboard" className="font-semibold">Admin Dashboard</Link>
         </h2>
       </div>
 
