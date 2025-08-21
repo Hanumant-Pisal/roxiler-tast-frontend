@@ -3,7 +3,7 @@ import AdminLayout from "../../layouts/AdminLayout";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { adminFetchStatsThunk } from "../../features/admin/adminThunks";
-import { Bar } from 'react-chartjs-2';
+import { Bar, Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +12,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement
 } from 'chart.js';
 
 // Register ChartJS components
@@ -19,6 +20,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend
@@ -143,7 +145,7 @@ function Inner() {
       <div className="">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
-          <p className="text-gray-500">Welcome back! Here's what's happening with your platform.</p>
+          
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -179,19 +181,91 @@ function Inner() {
           ))}
         </div>
 
-        {/* Chart Section */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-          <div className="mb-3">
-            <h2 className="text-base font-semibold text-gray-800">Platform Statistics</h2>
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Bar Chart Section */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+            <div className="mb-3">
+              <h2 className="text-base font-semibold text-gray-800">Platform Statistics</h2>
+            </div>
+            <div className="h-64">
+              {statsLoading ? (
+                <div className="h-full flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                </div>
+              ) : (
+                <Bar data={chartData} options={chartOptions} />
+              )}
+            </div>
           </div>
-          <div className="h-48">
-            {statsLoading ? (
-              <div className="h-full flex items-center justify-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-              </div>
-            ) : (
-              <Bar data={chartData} options={chartOptions} />
-            )}
+
+          {/* Pie Chart Section */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+            <div className="mb-3">
+              <h2 className="text-base font-semibold text-gray-800">Data Distribution</h2>
+            </div>
+            <div className="h-64">
+              {statsLoading ? (
+                <div className="h-full flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                </div>
+              ) : (
+                <div className="h-full">
+                  <Pie data={{
+                    labels: ['Users', 'Stores', 'Ratings'],
+                    datasets: [{
+                      data: [stats.users || 0, stats.stores || 0, stats.ratings || 0],
+                      backgroundColor: [
+                        'rgba(79, 70, 229, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(245, 158, 11, 0.8)'
+                      ],
+                      borderColor: [
+                        'rgba(79, 70, 229, 1)',
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(245, 158, 11, 1)'
+                      ],
+                      borderWidth: 1,
+                      hoverOffset: 4
+                    }]
+                  }} options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        position: 'right',
+                        labels: {
+                          boxWidth: 12,
+                          padding: 16,
+                          font: {
+                            size: 12
+                          }
+                        }
+                      },
+                      tooltip: {
+                        callbacks: {
+                          label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = Math.round((value / total) * 100);
+                            return `${label}: ${value.toLocaleString()} (${percentage}%)`;
+                          }
+                        },
+                        displayColors: false,
+                        padding: 8,
+                        titleFont: {
+                          size: 12
+                        },
+                        bodyFont: {
+                          size: 12
+                        }
+                      }
+                    }
+                  }} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

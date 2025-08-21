@@ -1,13 +1,14 @@
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { ROUTES } from "../utils/constants";
-import { Home, Users, Store, Settings } from 'lucide-react';
+import { Home, Users, Store, Key } from 'lucide-react';
 
 export default function AdminLayout({ children }) {
   const items = [
     { label: "Dashboard", to: ROUTES.ADMIN_DASH, icon: Home },
     { label: "Users", to: ROUTES.ADMIN_USERS, icon: Users },
     { label: "Stores", to: ROUTES.ADMIN_STORES, icon: Store },
+    { label: "Change Password", to: ROUTES.ADMIN_CHANGE_PASSWORD, icon: Key },
   ];
   return (
     <div className="min-h-screen bg-gray-50">

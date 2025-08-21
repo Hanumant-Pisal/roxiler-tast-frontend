@@ -1,7 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import ChangePassword from "./pages/auth/ChangePassword";
+import AdminChangePassword from "./pages/admin/ChangePassword";
 import StoresList from "./pages/user/StoresList";
 import OwnerDashboard from "./pages/owner/OwnerDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -13,7 +16,20 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
-    <Routes>
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <Routes>
       {/* Auth */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
@@ -31,9 +47,11 @@ function App() {
       <Route path="/admin/users/new" element={<ProtectedRoute><UserForm /></ProtectedRoute>} />
       <Route path="/admin/stores" element={<ProtectedRoute><AdminStoresList /></ProtectedRoute>} />
       <Route path="/admin/stores/new" element={<ProtectedRoute><StoreForm /></ProtectedRoute>} />
+      <Route path="/admin/change-password" element={<ProtectedRoute><AdminChangePassword /></ProtectedRoute>} />
 
       <Route path="*" element={<Navigate to="/login" />} />
-    </Routes>
+      </Routes>
+    </>
   );
 }
 
