@@ -14,7 +14,7 @@ export default function Sidebar({ items = [] }) {
       <div className="mb-10">
         <h2 className="text-2xl font-bold text-gray-800 flex items-center justify-center mt-6">
          
-          <Link to="/" className="font-semibold">Admin Dashboard</Link>
+          <Link to="/admin/dashboard" className="font-semibold">Admin Dashboard</Link>
         </h2>
       </div>
 
@@ -29,20 +29,20 @@ export default function Sidebar({ items = [] }) {
               <li key={item.to}>
                 <Link
                   to={item.to}
-                  className={`flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                  className={`flex items-center px-4 py-3 text-base font-medium rounded-lg transition-colors ${
                     active
                       ? 'bg-indigo-50 text-indigo-700 font-semibold'
                       : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
-                  <span className={`flex items-center justify-center w-8 h-8 mr-3 rounded-lg ${
+                  <span className={`flex items-center justify-center w-10 h-10 mr-3 rounded-lg ${
                     active ? 'bg-indigo-100 text-indigo-600' : 'text-gray-500'
                   }`}>
-                    <Icon className={`w-4 h-4 ${active ? 'text-indigo-600' : 'text-gray-500'}`} />
+                    <Icon className={`w-5 h-5 ${active ? 'text-indigo-600' : 'text-gray-500'}`} />
                   </span>
                   {item.label}
                   {active && (
-                    <span className="ml-auto w-1 h-6 bg-indigo-600 rounded-full"></span>
+                    <span className="ml-auto w-1.5 h-8 bg-indigo-600 rounded-full"></span>
                   )}
                 </Link>
               </li>

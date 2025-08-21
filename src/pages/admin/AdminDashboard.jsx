@@ -171,12 +171,7 @@ function Inner() {
                   {cardIcons[k]}
                 </div>
               </div>
-              <div className="mt-4 pt-4 border-t border-gray-100">
-                <div className="flex items-center text-sm text-gray-500">
-                  <span className="h-2 w-2 rounded-full bg-green-400 mr-2"></span>
-                  <span>Active</span>
-                </div>
-              </div>
+             
             </div>
           ))}
         </div>
