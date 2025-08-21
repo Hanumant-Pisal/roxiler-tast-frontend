@@ -9,6 +9,7 @@ function OwnerDashboardInner() {
   const [selectedStore, setSelectedStore] = useState(null);
   const [raters, setRaters] = useState([]);
   const [search, setSearch] = useState("");
+  const [storeSearch, setStoreSearch] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
@@ -183,39 +184,50 @@ function OwnerDashboardInner() {
 
   return (
     <OwnerLayout>
-      <div className="space-y-6">
-        {selectedStore && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {stats.map((stat) => (
-              <div key={stat.id} className={`bg-gradient-to-br ${stat.color} border rounded-2xl p-6 shadow-sm`}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-                    <p className="text-2xl font-semibold text-gray-900 mt-1">{stat.value}</p>
-                    <p className="text-xs text-gray-500 mt-1">{stat.description}</p>
-                  </div>
-                  <div className="p-3 rounded-full bg-white shadow-sm">
-                    {stat.icon}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Store Selector */}
-        <div className={`bg-white rounded-2xl shadow-sm border p-6 ${stores.length > 0 ? 'block' : 'hidden'}`}>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Your Stores</h2>
-            <span className="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-full">
-              {stores.length} {stores.length === 1 ? 'Store' : 'Stores'}
-            </span>
-          </div>
-          
-          {stores.length > 1 ? (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {stores.map((store) => (
+      <div className="flex flex-row gap-4 w-full max-w-7xl mx-auto px-2">
+        {/* Sidebar with Stores */}
+        <div className="w-80 flex-shrink-0 space-y-6">
+          <div className="bg-white rounded-2xl shadow-sm border p-6">
+            <div className="relative mb-4">
+              <input
+                type="text"
+                className="w-full pl-10 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Search stores..."
+                value={storeSearch}
+                onChange={(e) => setStoreSearch(e.target.value)}
+              />
+              <svg
+                className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">Your Stores</h2>
+              <span className="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-full">
+                {stores.filter(store => 
+                  store.name.toLowerCase().includes(storeSearch.toLowerCase())
+                ).length} {stores.filter(store => 
+                  store.name.toLowerCase().includes(storeSearch.toLowerCase())
+                ).length === 1 ? 'Store' : 'Stores'}
+              </span>
+            </div>
+            
+            {stores.length > 0 ? (
+              <div className="space-y-3">
+                {stores
+                  .filter(store => 
+                    store.name.toLowerCase().includes(storeSearch.toLowerCase())
+                  )
+                  .map((store) => (
                   <div 
                     key={store._id}
                     onClick={() => setSelectedStore(store)}
@@ -233,7 +245,7 @@ function OwnerDashboardInner() {
                         </span>
                       )}
                     </div>
-                    <p className="mt-1 text-sm text-gray-500 line-clamp-2">{store.address}</p>
+                    
                     <div className="mt-2 flex items-center text-sm text-gray-500">
                       <svg className="flex-shrink-0 mr-1.5 h-4 w-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -245,33 +257,35 @@ function OwnerDashboardInner() {
                   </div>
                 ))}
               </div>
-            </div>
-          ) : null}
-          
-          {stores.length === 1 && (
-            <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
-              <p className="text-blue-800">You have only one store. Add more stores to manage multiple locations.</p>
-            </div>
-          )}
+            ) : (
+              <p className="text-gray-500 text-sm">No stores found</p>
+            )}
+          </div>
         </div>
 
-        {!selectedStore && stores.length > 1 ? (
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-yellow-700">
-                  Please select a store to view its details and ratings.
-                </p>
-              </div>
-            </div>
-          </div>
-        ) : selectedStore ? (
+        {/* Main Content */}
+        <div className="flex-1 min-w-0 space-y-6">
+        {selectedStore ? (
           <>
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {stats.map((stat) => (
+                <div key={stat.id} className={`bg-gradient-to-br ${stat.color} border rounded-2xl p-6 shadow-sm`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">{stat.title}</p>
+                      <p className="text-2xl font-semibold text-gray-900 mt-1">{stat.value}</p>
+                      <p className="text-xs text-gray-500 mt-1">{stat.description}</p>
+                    </div>
+                    <div className="p-3 rounded-full bg-white shadow-sm">
+                      {stat.icon}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Ratings Table */}
             <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
               <div className="p-6 pb-4">
                 <div className="flex items-center justify-between mb-6">
@@ -306,20 +320,32 @@ function OwnerDashboardInner() {
                     <div className="flex justify-center items-center p-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
                     </div>
-                  ) : selectedStore ? (
-                    <Table columns={cols} data={raters} />
                   ) : (
-                    <div className="text-center p-8 text-gray-500">
-                      No store selected or no stores available
-                    </div>
+                    <Table columns={cols} data={raters} />
                   )}
                 </div>
               </div>
             </div>
           </>
-        ) : null}
+        ) : (
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg w-full">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-yellow-700">
+                  Please select a store to view its details and ratings.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </OwnerLayout>
+    </div>
+  </OwnerLayout>
   );
 }
 
