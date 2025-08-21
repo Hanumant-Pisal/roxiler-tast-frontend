@@ -20,32 +20,46 @@ export default function Navbar() {
 
   return (
     <div className="w-full bg-white border-b">
-      <div className="max-w-6xl mx-auto flex items-center justify-end p-4">
-       
-        <div className="flex items-center gap-6">
+      <div className=" flex items-center justify-between p-4">
+        {!user || user.role !== 'admin' ? (
+          <Link 
+            to={user?.role === 'owner' ? ROUTES.OWNER_DASH : ROUTES.HOME}
+            className="text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors ml-6"
+          >
+            Ratings Platform
+          </Link>
+        ) : (
+          <div></div> // Empty div to maintain flex layout
+        )}
+        <div className="flex items-center gap-6 mr-6">
           {user && (
             <>
-              <div className="hidden md:flex items-center gap-4">
-                {user.role === "admin" && (
+              {/* <div className="hidden md:flex items-center gap-4"> */}
+                {/* {user.role === "admin" && (
                   <>
                     <Link className="hover:underline" to={ROUTES.ADMIN_DASH}>Admin</Link>
                     <Link className="hover:underline" to={ROUTES.ADMIN_USERS}>Users</Link>
                     <Link className="hover:underline" to={ROUTES.ADMIN_STORES}>Stores</Link>
                   </>
-                )}
-                {user.role === "owner" && (
-                  <Link className="hover:underline" to={ROUTES.OWNER_DASH}>Owner</Link>
-                )}
-                <Link className="hover:underline" to={ROUTES.STORES}>Stores</Link>
-              </div>
+                )} */}
+               
+                {/* <Link className="hover:underline" to={ROUTES.STORES}>Stores</Link>
+              </div> */}
               
               <div className="relative">
                 <button 
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors focus:outline-none"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors focus:outline-none"
                 >
-                  <FiUser className="text-gray-600" size={20} />
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                    <FiUser className="text-blue-600" size={16} />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 hidden sm:inline">
+                    {user.name?.split(' ')[0] || 'Profile'}
+                  </span>
+                  <FiChevronDown className={`text-gray-500 transition-transform ${isDropdownOpen ? 'transform rotate-180' : ''}`} size={16} />
                 </button>
+                
                 
                 {isDropdownOpen && (
                   <div 
@@ -53,21 +67,23 @@ export default function Navbar() {
                     onMouseLeave={() => setIsDropdownOpen(false)}
                   >
                     <div className="px-4 py-2 border-b">
-                      <p className="text-sm font-medium text-gray-900 truncate">{user.name || user.email}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate"></p>
                       <div className="flex items-center justify-between">
                       
-                        <span className="mt-4 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <span className=" inline-flex flex items-center justify-center  text-white px-2.5 py-0.5 rounded text-xm font-medium bg-gray-500 w-full">
                           {user.role}
                         </span>
                       </div>
                     </div>
-                    <Link 
-                      to={ROUTES.CHANGE_PASSWORD}
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      <FiKey className="mr-2" /> Change Password
-                    </Link>
+                    {user.role !== 'admin' && (
+                      <Link 
+                        to={ROUTES.CHANGE_PASSWORD}
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        <FiKey className="mr-2" /> Change Password
+                      </Link>
+                    )}
                     <button
                       onClick={() => {
                         setIsDropdownOpen(false);
