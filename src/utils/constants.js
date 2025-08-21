@@ -16,4 +16,5 @@ export const ROLES = {
     ADMIN_STORES: "/admin/stores",
     ADMIN_STORES_NEW: "/admin/stores/new",
     ADMIN_SETTINGS: "/admin/settings",
+    ADMIN_CHANGE_PASSWORD: "/admin/change-password",
   };

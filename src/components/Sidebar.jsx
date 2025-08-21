@@ -9,16 +9,12 @@ export default function Sidebar({ items = [] }) {
   };
 
   return (
-    <div className="w-72 h-screen bg-white border-r border-gray-100 flex flex-col shadow-sm">
+    <div className="w-72 h-screen bg-gray-300 border-r border-gray-100 flex flex-col shadow-sm">
       {/* Logo/Brand */}
-      <div className="p-5 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-gray-800 flex items-center">
-          <span className="bg-indigo-600 text-white p-1.5 rounded-lg mr-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
-            </svg>
-          </span>
-          <Link to="/" className="font-semibold">Rating Management</Link>
+      <div className="mb-10">
+        <h2 className="text-2xl font-bold text-gray-800 flex items-center justify-center mt-6">
+         
+          <Link to="/" className="font-semibold">Admin Dashboard</Link>
         </h2>
       </div>
 
@@ -33,20 +29,20 @@ export default function Sidebar({ items = [] }) {
               <li key={item.to}>
                 <Link
                   to={item.to}
-                  className={`flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+                  className={`flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
                     active
                       ? 'bg-indigo-50 text-indigo-700 font-semibold'
                       : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
                   <span className={`flex items-center justify-center w-8 h-8 mr-3 rounded-lg ${
-                    active ? 'bg-indigo-100 text-indigo-600' : 'bg-gray-50 text-gray-500'
+                    active ? 'bg-indigo-100 text-indigo-600' : 'text-gray-500'
                   }`}>
                     <Icon className={`w-4 h-4 ${active ? 'text-indigo-600' : 'text-gray-500'}`} />
                   </span>
                   {item.label}
                   {active && (
-                    <span className="ml-auto w-1.5 h-6 bg-indigo-600 rounded-full"></span>
+                    <span className="ml-auto w-1 h-6 bg-indigo-600 rounded-full"></span>
                   )}
                 </Link>
               </li>

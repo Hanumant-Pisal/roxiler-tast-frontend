@@ -23,7 +23,7 @@ function Inner() {
 
   return (
     <AdminLayout>
-      <div className="max-w-lg bg-white border rounded-2xl p-6">
+      <div className="max-w-lg mx-auto bg-white border rounded-2xl p-6">
         <h1 className="text-xl font-semibold mb-4">Create Store</h1>
         <form onSubmit={submit}>
           <Input label="Store Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />

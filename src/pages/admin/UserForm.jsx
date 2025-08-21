@@ -34,7 +34,7 @@ function Inner() {
 
   return (
     <AdminLayout>
-      <div className="max-w-lg bg-white border rounded-2xl p-6">
+      <div className="max-w-lg mx-auto bg-white border rounded-2xl p-6">
         <h1 className="text-xl font-semibold mb-4">Create User</h1>
         <form onSubmit={submit}>
           <Input label="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} error={errors.name} />
