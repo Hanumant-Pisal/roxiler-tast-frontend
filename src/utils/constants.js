@@ -15,5 +15,5 @@ export const ROLES = {
     ADMIN_USERS_NEW: "/admin/users/new",
     ADMIN_STORES: "/admin/stores",
     ADMIN_STORES_NEW: "/admin/stores/new",
+    ADMIN_SETTINGS: "/admin/settings",
   };
-  

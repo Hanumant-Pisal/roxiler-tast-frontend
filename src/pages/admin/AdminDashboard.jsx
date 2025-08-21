@@ -3,6 +3,26 @@ import AdminLayout from "../../layouts/AdminLayout";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { adminFetchStatsThunk } from "../../features/admin/adminThunks";
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+// Register ChartJS components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function Inner() {
   const dispatch = useAppDispatch();
@@ -42,17 +62,91 @@ function Inner() {
     ratings: 'from-amber-50 to-white'
   };
 
+  // Prepare chart data
+  const chartData = {
+    labels: ['Users', 'Stores', 'Ratings'],
+    datasets: [
+      {
+        label: 'Count',
+        data: [stats.users || 0, stats.stores || 0, stats.ratings || 0],
+        backgroundColor: [
+          'rgba(79, 70, 229, 0.8)', // indigo
+          'rgba(16, 185, 129, 0.8)', // emerald
+          'rgba(245, 158, 11, 0.8)', // amber
+        ],
+        borderColor: [
+          'rgba(79, 70, 229, 1)',
+          'rgba(16, 185, 129, 1)',
+          'rgba(245, 158, 11, 1)',
+        ],
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return `${context.parsed.y.toLocaleString()}`;
+          }
+        },
+        displayColors: false,
+        padding: 8,
+        titleFont: {
+          size: 12
+        },
+        bodyFont: {
+          size: 12
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          display: false,
+        },
+        ticks: {
+          callback: function(value) {
+            return value.toLocaleString();
+          },
+          font: {
+            size: 11
+          },
+          padding: 4
+        }
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          font: {
+            size: 11
+          },
+          padding: 2
+        }
+      }
+    }
+  };
+
   return (
     <AdminLayout>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
-            <p className="text-gray-500">Welcome back! Here's what's happening with your platform.</p>
-          </div>
+      <div className="">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
+          <p className="text-gray-500">Welcome back! Here's what's happening with your platform.</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {["users", "stores", "ratings"].map((k) => (
             <div 
               key={k} 
@@ -83,6 +177,22 @@ function Inner() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Chart Section */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+          <div className="mb-3">
+            <h2 className="text-base font-semibold text-gray-800">Platform Statistics</h2>
+          </div>
+          <div className="h-48">
+            {statsLoading ? (
+              <div className="h-full flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+              </div>
+            ) : (
+              <Bar data={chartData} options={chartOptions} />
+            )}
+          </div>
         </div>
       </div>
     </AdminLayout>
