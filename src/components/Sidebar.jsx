@@ -3,14 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 export default function Sidebar({ items = [] }) {
   const loc = useLocation();
   
-  // Check if a route is active (including subroutes)
+  
   const isActive = (path) => {
     return loc.pathname.startsWith(path) && path !== '/admin';
   };
 
   return (
     <div className="w-72 h-screen bg-gray-300 border-r border-gray-100 flex flex-col shadow-sm">
-      {/* Logo/Brand */}
+      
       <div className="mb-10">
         <h2 className="text-2xl font-bold text-gray-800 flex items-center justify-center mt-6">
          
@@ -18,7 +18,7 @@ export default function Sidebar({ items = [] }) {
         </h2>
       </div>
 
-      {/* Navigation */}
+      
       <nav className="flex-1 px-3 py-4 overflow-y-auto">
         <ul className="space-y-1">
           {items.map((item) => {
