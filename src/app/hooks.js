@@ -8,9 +8,13 @@ export const useAppSelector = useSelector;
 
 export function useEnsureAuthLoaded() {
   const dispatch = useAppDispatch();
-  const { user, initialized } = useAppSelector((s) => s.auth);
+  const { user, initialized, status } = useAppSelector((s) => s.auth);
+  
   useEffect(() => {
-    if (!initialized) dispatch(fetchMe());
-  }, [initialized, dispatch]);
+    if (!initialized && status !== 'loading') {
+      dispatch(fetchMe());
+    }
+  }, [dispatch, initialized, status]);
+
   return { user, initialized };
 }
