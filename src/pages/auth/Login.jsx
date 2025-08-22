@@ -20,10 +20,10 @@ export default function Login() {
     e.preventDefault();
     const res = await dispatch(loginThunk(form));
     if (res.meta.requestStatus === "fulfilled") {
-      // The ProtectedRoute will handle the redirection based on the user's role
-      // This prevents the continuous refresh issue
-      const from = location.state?.from?.pathname || "/";
-      navigate(from, { replace: true });
+      const role = res.payload.user.role;
+      if (role === "admin") navigate(ROUTES.ADMIN_DASH);
+      else if (role === "owner") navigate(ROUTES.OWNER_DASH);
+      else navigate(ROUTES.STORES);
     }
   };
 
