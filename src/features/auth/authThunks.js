@@ -14,9 +14,12 @@ export const signupThunk = createAsyncThunk(
 
 export const loginThunk = createAsyncThunk(
   "auth/login",
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
-      return await authApi.login(payload);
+      const response = await authApi.login(payload);
+      // Dispatch fetchMe to ensure auth state is properly set
+      await dispatch(fetchMe()).unwrap();
+      return response;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message || e.message);
     }
